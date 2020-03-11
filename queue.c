@@ -1,197 +1,162 @@
-#include<stdio.h>
-int menu();
-void insert();
-void delete();
-void update();
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int value;
+    struct node *ptr;
+}*front,*rear,*temp,*front1;
+
+int frontelement();
+void enq(int data);
+void deq();
+void empty();
+void display();
+void create();
+void queuesize();
+
+int count = 0;
 
 int main()
 {
-    while(menu()!=5);
+    int no, ch, e;
 
-
-
-    return 0;
+    printf("\n 1 - Enque");
+    printf("\n 2 - Deque");
+    printf("\n 3 - Front element");
+    printf("\n 4 - Empty");
+    printf("\n 5 - Exit");
+    printf("\n 6 - Display");
+    printf("\n 7 - Queue size");
+    create();
+    while (1)
+    {
+        printf("\n Enter choice : ");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            printf("Enter data : ");
+            scanf("%d", &no);
+            enq(no);
+            break;
+        case 2:
+            deq();
+            break;
+        case 3:
+            e = frontelement();
+            if (e != 0)
+                printf("Front element : %d", e);
+            else
+                printf("\n No front element in Queue as queue is empty");
+            break;
+        case 4:
+            empty();
+            break;
+        case 5:
+            exit(0);
+        case 6:
+            display();
+            break;
+        case 7:
+            queuesize();
+            break;
+        default:
+            printf("Wrong choice, Please enter correct choice  ");
+            break;
+        }
+    }
 }
 
-int menu()
+void create()
 {
-    int op;
-    printf("Select Linked List Operation :\n");
-    printf("1. Insert\n");
-    printf("2. Delete\n");
-    printf("3. Update\n");
-    printf("4. Search\n");
-    printf("5. Close\n");
-    printf("Input Operation : ");
-
-    scanf("%d",&op);
-    printf("%d",op);
-    if(op==1){
-        insert();
-    }
-    else if(op==2){
-        delete();
-    }
-    else if(op==3){
-        update();
-    }
-    else if(op==4){
-        search();
-    }
-    else if(op==5){
-        printf("===Close Operation===");
-        return op;
-    }
-    else{
-        printf("Invalid Operation try again\n");
-    }
-
-
-
-
+    front = rear = NULL;
 }
 
-
-void insert()
+void queuesize()
 {
-    int op;
-    printf("Select insert Operation :\n");
-    printf("1. push front\n");
-    printf("2. push back\n");
-    printf("3. push after\n");
-    printf("4. push before\n");
-    printf("5. push at\n");
-    printf("6. close\n");
+    printf("\n Queue size : %d", count);
+}
 
-    printf("Input Operation : ");
+void enq(int data)
+{
+    if (rear == NULL)
+    {
+        rear = (struct node *)malloc(1*sizeof(struct node));
+        rear->ptr = NULL;
+        rear->value = data;
+        front = rear;
+    }
+    else
+    {
+        temp=(struct node *)malloc(1*sizeof(struct node));
+        rear->ptr = temp;
+        temp->value = data;
+        temp->ptr = NULL;
 
-    scanf("%d",&op);
-    printf("%d",op);
-    if(op==1){
-        printf("===push front Operation===");
+        rear = temp;
     }
-    else if(op==2){
-        printf("===push back Operation===");
-    }
-    else if(op==3){
-        printf("===push after Operation===");
-    }
-    else if(op==4){
-        printf("===push before Operation===");
-    }
-    else if(op==5){
-        printf("===push at Operation===");
-    }
-    else if(op==6){
-        printf("===Close Operation===");
-        return op;
-    }
-    else{
-        printf("Invalid Operation try again\n");
-    }
-
-
-
-
+    count++;
 }
 
 
-
-void delete()
+void display()
 {
-    int op;
-    printf("Select Delete Operation :\n");
-    printf("1. pop front\n");
-    printf("2. pop back\n");
-    printf("3. pop value\n");
-    printf("4. pop at\n");
-    printf("5. close\n");
+    front1 = front;
 
-    printf("Input Operation : ");
+    if ((front1 == NULL) && (rear == NULL))
+    {
+        printf("Queue is empty");
+        return;
+    }
+    while (front1 != rear)
+    {
+        printf("%d ", front1->value);
+        front1 = front1->ptr;
+    }
+    if (front1 == rear)
+        printf("%d", front1->value);
+}
 
-    scanf("%d",&op);
-    printf("%d",op);
-    if(op==1){
-        printf("===pop front Operation===");
-    }
-    else if(op==2){
-        printf("===pop back Operation===");
-    }
-    else if(op==3){
-        printf("===pop value Operation===");
-    }
-    else if(op==4){
-        printf("===pop at Operation===");
-    }
-    else if(op==5){
-        printf("===Close Operation===");
-        return op;
-    }
-    else{
-        printf("Invalid Operation try again\n");
-    }
+void deq()
+{
+    front1 = front;
 
-
-
-
+    if (front1 == NULL)
+    {
+        printf("\n Error: Trying to display elements from empty queue");
+        return;
+    }
+    else if (front1->ptr != NULL)
+    {
+        front1 = front1->ptr;
+        printf("\n Dequed value : %d", front->value);
+        free(front);
+        front = front1;
+    }
+    else
+    {
+        printf("\n Dequed value : %d", front->value);
+        free(front);
+        front = NULL;
+        rear = NULL;
+    }
+    count--;
 }
 
 
-
-
-
-void update()
+int frontelement()
 {
-    int op;
-    printf("Select Update Operation :\n");
-    printf("1. update at\n");
-    printf("2. update value\n");
-    printf("3. close\n");
-
-    printf("Input Operation : ");
-
-    scanf("%d",&op);
-    printf("%d",op);
-    if(op==1){
-        printf("===update at Operation===");
-    }
-    else if(op==2){
-        printf("===update value Operation===");
-    }
-    else if(op==3){
-        printf("===Close Operation===");
-        return op;
-    }
-    else{
-        printf("Invalid Operation try again\n");
-    }
-
+    if ((front != NULL) && (rear != NULL))
+        return(front->value);
+    else
+        return 0;
 }
 
-
-
-
-
-void search()
+void empty()
 {
-    int op;
-    printf("Select Search Operation :\n");
-    printf("1. search\n");
-    printf("2. close\n");
-
-    printf("Input Operation : ");
-
-    scanf("%d",&op);
-    printf("%d",op);
-    if(op==1){
-        printf("===search Operation===");
-    }
-    else if(op==2){
-        printf("===Close Operation===");
-        return op;
-    }
-    else{
-        printf("Invalid Operation try again\n");
-    }
-
+    if ((front == NULL) && (rear == NULL))
+        printf("\n Queue empty");
+    else
+        printf("Queue not empty");
 }
